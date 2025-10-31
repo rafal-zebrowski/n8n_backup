@@ -1,0 +1,75 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-30T07:44:20.742Z",
+  "id": "1Zff5q6eCRob34SH",
+  "isArchived": false,
+  "meta": null,
+  "name": "labs",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b8fe25ce-5eec-4caf-887c-8f40bcd3fa74",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/backup/n8n/*",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5aa7439f-e429-4691-8dc7-ef66c1560725",
+      "name": "Read/Write Files from Disk"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n_backup",
+  "repo_owner": "rafal-zebrowski",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-10-30T07:44:20.743Z",
+      "createdAt": "2025-10-30T07:44:20.743Z",
+      "role": "workflow:owner",
+      "workflowId": "1Zff5q6eCRob34SH",
+      "projectId": "6NQeiQ2Ah5lORrJb"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-30T15:55:20.000Z",
+  "versionId": "4e951112-232e-408b-aa3c-62c3bf4c529e"
+}
