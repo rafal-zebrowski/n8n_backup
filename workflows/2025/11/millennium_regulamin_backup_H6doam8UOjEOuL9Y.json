@@ -1,5 +1,268 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-11-27T11:06:42.707Z",
+    "createdAt": "2025-11-27T11:06:42.707Z",
+    "versionId": "3f048112-c1ad-4566-873e-b217c2125830",
+    "workflowId": "H6doam8UOjEOuL9Y",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  1
+                ],
+                "triggerAtHour": 9
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -192,
+          -32
+        ],
+        "id": "eb66ee1c-5975-42ac-b121-ab10bd177ecb",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4d6d2b15-827d-4cb5-8d46-ebde43c3cbf6",
+                "name": "=fileName",
+                "value": "={{ $input.first().binary.regulamin.fileName }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          256,
+          -32
+        ],
+        "id": "7c523e48-dd39-4a10-81f1-4948c4eec7ab",
+        "name": "get file name"
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "searchMethod": "query",
+          "queryString": "=name = '{{ $json.fileName }}'",
+          "filter": {},
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          480,
+          -32
+        ],
+        "id": "b1b9650e-3c08-4260-95e7-dd830928cf6e",
+        "name": "search file",
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "ZxB7u9WQwYycd7Qn",
+            "name": "GoogleAuth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://www.bankmillennium.pl/delegate/managedfiles/591/latest",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "regulamin"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          32,
+          -32
+        ],
+        "id": "1e5257f5-a637-494a-876a-94eb811a27f1",
+        "name": "download file from millennium"
+      },
+      {
+        "parameters": {
+          "chatId": "330489379",
+          "text": "=Nowy regulamin promocji konta oszcz. w Millennium został zapisany. Nazwa pliku: {{ $json.name }}",
+          "additionalFields": {
+            "parse_mode": "HTML"
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          1152,
+          -48
+        ],
+        "id": "8543abd3-0d1b-4271-82bd-39f443a1270d",
+        "name": "send notification",
+        "webhookId": "eabcebde-7222-4911-880b-5ed45c367116",
+        "credentials": {
+          "telegramApi": {
+            "id": "tGa5INI55UdydbjD",
+            "name": "Telegram account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "inputDataFieldName": "={{ $('download file from millennium').item.binary.regulamin }}",
+          "name": "={{ $('get file name').item.json.fileName }}",
+          "driveId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1aSMGUEMG-boCZdyYLoW51Gl0i6YCBzXt",
+            "mode": "list",
+            "cachedResultName": "Millennium_regulamin_oszczednosciowe",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1aSMGUEMG-boCZdyYLoW51Gl0i6YCBzXt"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          928,
+          -48
+        ],
+        "id": "bc123c56-0c42-4df7-91cc-c7372e2779a2",
+        "name": "upload file",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "ZxB7u9WQwYycd7Qn",
+            "name": "GoogleAuth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "af0ccda7-5d37-4711-a055-e01dab6db1fb",
+                "leftValue": "={{ $json.name }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          704,
+          -32
+        ],
+        "id": "0defe3ed-4aae-4146-b943-97f268400b8a",
+        "name": "if not exist"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "download file from millennium",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get file name": {
+        "main": [
+          [
+            {
+              "node": "search file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "search file": {
+        "main": [
+          [
+            {
+              "node": "if not exist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "download file from millennium": {
+        "main": [
+          [
+            {
+              "node": "get file name",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "upload file": {
+        "main": [
+          [
+            {
+              "node": "send notification",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "if not exist": {
+        "main": [
+          [
+            {
+              "node": "upload file",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "3f048112-c1ad-4566-873e-b217c2125830",
   "connections": {
     "Schedule Trigger": {
       "main": [
