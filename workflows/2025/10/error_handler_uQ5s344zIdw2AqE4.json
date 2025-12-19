@@ -1,7 +1,65 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-11-27T11:06:42.707Z",
+    "createdAt": "2025-11-27T11:06:42.707Z",
+    "versionId": "89c4e371-9297-4101-9753-c9b5942e8727",
+    "workflowId": "uQ5s344zIdw2AqE4",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          -448,
+          -80
+        ],
+        "id": "8336f4db-4d6b-48ef-920f-f0be5ffe2a55",
+        "name": "Error Trigger"
+      },
+      {
+        "parameters": {
+          "chatId": "330489379",
+          "text": "=Wystąpił błąd w workflow n8n!\nId:  {{ $json.workflow.id }}, \nName: {{ $json.workflow.name }}, \nError: {{ $json.execution.error.message }}",
+          "additionalFields": {
+            "parse_mode": "HTML"
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          -240,
+          -80
+        ],
+        "id": "a120f6cb-277b-4d61-8f2b-54d8f50b211d",
+        "name": "Send a text message",
+        "webhookId": "6c3b5e5b-de13-4229-b565-4a45228e9913",
+        "credentials": {
+          "telegramApi": {
+            "id": "tGa5INI55UdydbjD",
+            "name": "Telegram account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Error Trigger": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "89c4e371-9297-4101-9753-c9b5942e8727",
   "connections": {
     "Error Trigger": {
       "main": [
